@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Smart Exam Monitoring</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #1b2735, #090a0f);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .logo-area {
+            padding-top: 25px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-area img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            animation: pulseGlow 2s infinite;
+        }
+
+        .logo-area h1 {
+            margin-top: 10px;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .box {
+            width: 380px;
+            margin: 25px auto 40px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            border-radius: 6px;
+            border: 1px solid #555;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        input:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 5px #00d4ff;
+        }
+
+        button {
+            background: #00b4ff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 15px rgba(0, 180, 255, 0.8);
+            background: #0090dd;
+        }
+
+        video {
+            width: 95%;
+            margin-top: 15px;
+            border-radius: 12px;
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .status-text {
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-live {
+            color: #00ff99;
+            animation: glowText 1.2s infinite alternate;
+        }
+
+        .status-alert {
+            color: #ff4d4d;
+            animation: glowRed 0.9s infinite alternate;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #00ff99;
+            animation: blinkDot 1s infinite;
+        }
+
+        .log-box {
+            margin-top: 15px;
+            font-size: 13px;
+            text-align: left;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            max-height: 90px;
+            overflow: hidden;
+        }
+
+        .log-entry {
+            opacity: 0;
+            transform: translateY(5px);
+            animation: logAppear 0.4s forwards;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            margin: 4px 3px 0;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 12px rgba(0, 255, 255, 0.6); }
+            50% { box-shadow: 0 0 22px rgba(0, 255, 255, 1); }
+            100% { box-shadow: 0 0 12px rgba(0, 255, 255, 0.6); }
+        }
+
+        @keyframes glowText {
+            from { text-shadow: 0 0 4px #00ff99; }
+            to { text-shadow: 0 0 12px #00ffcc; }
+        }
+
+        @keyframes glowRed {
+            from { text-shadow: 0 0 4px #ff4d4d; }
+            to { text-shadow: 0 0 12px #ff8080; }
+        }
+
+        @keyframes blinkDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        @keyframes logAppear {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top logo + heading -->
+    <div class="logo-area">
+        <!-- Change exam-logo.png to your own image file name -->
+        <img src="mylogo.png.jpg" alt="Exam Logo">
+        <h1>AI Smart Exam Monitoring</h1>
+        <p style="font-size:13px;opacity:0.8;">Prototype UI – Student Side</p>
+    </div>
+
+    <!-- Login Page -->
+    <div class="box" id="loginPage">
+        <h2>Login to Start Exam</h2>
+        <input type="text" id="studentID" placeholder="Enter Student ID"><br>
+        <input type="text" id="examCode" placeholder="Enter Exam Code"><br>
+        <button onclick="startExam()">Next → Instructions</button>
+
+        <div style="margin-top:15px;">
+            <span class="tag">Face Detection</span>
+            <span class="tag">Head Pose</span>
+            <span class="tag">Multiple Faces</span>
+        </div>
+    </div>
+
+    <!-- Instructions Page -->
+    <div class="box" id="instructionPage" style="display:none;">
+        <h2>Exam Instructions</h2>
+        <p style="font-size:14px;opacity:0.9;line-height:22px;text-align:left;">
+            • Ensure you are sitting in a well-lit room.<br>
+            • Your face must be clearly visible throughout the exam.<br>
+            • Do not look away from the screen frequently.<br>
+            • No mobile phone or external devices allowed.<br>
+            • Do not move away from webcam range.<br>
+            • Multiple faces will be treated as malpractice.<br>
+            • Background noise must be minimal.<br>
+        </p>
+        <button onclick="goToMonitoring()">I Agree & Start Monitoring</button>
+    </div>
+
+    <!-- Monitoring Page -->
+    <div class="box" id="monitorPage" style="display:none;">
+        <h2>Live Exam Monitoring</h2>
+        <video id="camera" autoplay></video>
+
+        <p class="status-text status-live" id="statusText">
+            <span class="status-dot"></span>
+            Monitoring active – No suspicious activity
+        </p>
+
+        <div class="log-box" id="logBox">
+            <!-- Logs added here -->
+        </div>
+
+        <button onclick="showReport()">Finish & View Report</button>
+    </div>
+
+    <!-- Multiple Faces Alert Page -->
+    <div class="box" id="multiFaceAlert" style="display:none; border:2px solid #ff4d4d;">
+        <h2 style="color:#ff4d4d;">⚠ Multiple Faces Detected</h2>
+        <p style="font-size:14px;line-height:22px;">
+            The system has detected more than one face in the frame.<br><br>
+            <b>This is marked as suspicious behavior.</b><br><br>
+            Please ensure only <b>one person</b> is visible in front of the camera.
+        </p>
+        <button onclick="backToMonitoring()">Return to Monitoring</button>
+    </div>
+
+    <!-- Report Page -->
+    <div class="box" id="reportPage" style="display:none;">
+        <h2>Smart Monitoring Report</h2>
+        <p><b>Student ID:</b> <span id="rid"></span></p>
+        <p><b>Exam Code:</b> <span id="rexam"></span></p>
+        <p><b>Total Violations (Demo):</b> <span id="violations">1 – Multiple Faces Alert</span></p>
+        <p><b>Risk Level:</b> <span style="color:#00ff99;">Low – Safe ✅</span></p>
+        <p style="font-size:13px;opacity:0.8;margin-top:10px;">
+            *This is a prototype UI. In a real system, AI models will analyse face, gaze & body movements.
+        </p>
+    </div>
+
+    <p class="footer">AI-Based Smart Exam Monitoring System – Prototype</p>
+
+<script>
+    let logMessages = [
+        "Camera access granted. Face detected.",
+        "Gaze stable. Looking at screen.",
+        "No additional faces in the frame.",
+        "Lighting condition: Acceptable.",
+        "Background noise: Low.",
+        "Head movement within safe range."
+    ];
+
+    let logIndex = 0;
+    let logInterval = null;
+
+    function startExam() {
+        let id = document.getElementById("studentID").value.trim();
+        let exam = document.getElementById("examCode").value.trim();
+
+        if (id === "" || exam === "") {
+            alert("Please enter both Student ID and Exam Code!");
+            return;
+        }
+
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("instructionPage").style.display = "block";
+    }
+
+    function goToMonitoring() {
+        document.getElementById("instructionPage").style.display = "none";
+        document.getElementById("monitorPage").style.display = "block";
+
+        // Start camera
+        let cam = document.getElementById("camera");
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => cam.srcObject = stream)
+            .catch(err => {
+                alert("Unable to access camera. Check permissions.");
+                console.error(err);
+            });
+
+        // Start logs
+        startLogUpdates();
+    }
+
+    function startLogUpdates() {
+        let logBox = document.getElementById("logBox");
+        logBox.innerHTML = "";
+        logIndex = 0;
+
+        if (logInterval) clearInterval(logInterval);
+
+        logInterval = setInterval(() => {
+            if (logIndex < logMessages.length) {
+                let p = document.createElement("p");
+                p.className = "log-entry";
+                p.textContent = "• " + logMessages[logIndex];
+                logBox.appendChild(p);
+                logBox.scrollTop = logBox.scrollHeight;
+
+                logIndex++;
+
+                // Demo: trigger multiple faces alert after a few logs
+                if (logIndex === 4) {
+                    setTimeout(() => {
+                        showMultipleFaceAlert();
+                    }, 1500);
+                }
+            } else {
+                clearInterval(logInterval);
+            }
+        }, 1500);
+    }
+
+    function showMultipleFaceAlert() {
+        clearInterval(logInterval);
+
+        document.getElementById("monitorPage").style.display = "none";
+        document.getElementById("multiFaceAlert").style.display = "block";
+
+        // Update status text style
+        document.getElementById("statusText").classList.remove("status-live");
+        document.getElementById("statusText").classList.add("status-alert");
+        document.getElementById("statusText").innerHTML =
+            '<span class="status-dot" style="background:#ff4d4d;"></span>' +
+            'Multiple faces detected – Suspicious activity recorded';
+
+        // Add log entry
+        let logBox = document.getElementById("logBox");
+        let p = document.createElement("p");
+        p.className = "log-entry";
+        p.textContent = "• ALERT: More than one face detected!";
+        logBox.appendChild(p);
+    }
+
+    function backToMonitoring() {
+        document.getElementById("multiFaceAlert").style.display = "none";
+        document.getElementById("monitorPage").style.display = "block";
+    }
+
+    function showReport() {
+        document.getElementById("monitorPage").style.display = "none";
+        document.getElementById("multiFaceAlert").style.display = "none";
+        document.getElementById("reportPage").style.display = "block";
+
+        document.getElementById("rid").innerText =
+            document.getElementById("studentID").value;
+        document.getElementById("rexam").innerText =
+            document.getElementById("examCode").value;
+    }
+</script>
+
+</body>
+</html>
