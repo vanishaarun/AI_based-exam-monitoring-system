@@ -73,13 +73,6 @@ python main.py
 3. Optional (Run Web Version)
 streamlit run app.py
 
-📸 Demo Screens
-
-(Add your screenshots here)
-
-![Demo Screen 1](screenshots/demo1.png)
-![Demo Screen 2](screenshots/demo2.png)
-
 📑 Output Report
 
 The system generates a detailed report containing:
